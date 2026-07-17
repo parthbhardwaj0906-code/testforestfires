@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler  
 
-application = Flask(__name__)
+application = Flask(__name__) # the name is application to be used in aws deployment later.
 app = application
 
 # import ridge regressor and standard scaler pickle.
