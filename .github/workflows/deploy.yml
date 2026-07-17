@@ -29,3 +29,4 @@ jobs:
           version_label: "deploy-${{ github.sha }}"
           region: "us-east-2"                    # Change this to your AWS region
           deployment_package: deploy.zip
+          wait_for_deployment: false
