@@ -1,0 +1,31 @@
+name: Deploy to Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main  # 1. Triggers the pipeline when pushing to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 2. Downloads your repository source code onto GitHub's cloud server
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      # 3. Zips your code together into a clean deployment package
+      - name: Generate Deployment Package
+        run: zip -r deploy.zip . -x "*.git*"
+
+      # 4. Logs into AWS using your secrets and deploys to your environment
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: "my-model-app"      # Change this to your AWS App name
+          environment_name: "my-model-app-env"  # Change this to your AWS Env name
+          version_label: "deploy-${{ github.sha }}"
+          region: "us-east-1"                    # Change this to your AWS region
+          deployment_package: deploy.zip
